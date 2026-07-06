@@ -3,7 +3,7 @@ import time
 import os
 from google import genai
 import markdown
-import pdfkit
+from weasyprint import HTML
 
 st.set_page_config(page_title="Deep Research Agent", page_icon="🔍", layout="centered")
 st.title("Autonomous Research Assistant")
@@ -34,9 +34,9 @@ if st.button("Initialize Deep Research", type="primary") and query:
                 
                 if interaction.status == "completed":
                     final_report = interaction.output_text
-                    
+
                     html_content = markdown.markdown(final_report)
-                    pdf_bytes = pdfkit.from_string(html_content, False) 
+                    pdf_bytes = HTML(string=html_content).write_pdf()
                     
                     st.success("✅ Research Complete!")
                     
